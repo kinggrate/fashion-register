@@ -1,15 +1,16 @@
 .add-customer-page {
-  max-width: 800px;
+  max-width: 900px;
   margin: 30px auto;
   padding: 20px;
   background-color: #fefefe;
   border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 .add-customer-page h2 {
   text-align: center;
   color: #b45f7d;
+  margin-bottom: 20px;
 }
 
 .customer-form {
@@ -17,21 +18,28 @@
   flex-direction: column;
 }
 
+.customer-form h3 {
+  margin-top: 20px;
+  color: #b45f7d;
+  margin-bottom: 10px;
+}
+
+.measurements-section {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
 .customer-form input {
-  margin: 8px 0;
   padding: 8px;
   border-radius: 5px;
   border: 1px solid #ccc;
 }
 
-.customer-form h3 {
-  margin-top: 20px;
-  color: #b45f7d;
-}
-
 .customer-form button {
   margin-top: 20px;
-  padding: 10px;
+  padding: 12px;
   background-color: #b45f7d;
   color: white;
   font-weight: bold;

@@ -1,40 +1,33 @@
 import React, { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "./Navbar.css";
 
 export default function Navbar() {
-  const [searchQuery, setSearchQuery] = useState("");
   const navigate = useNavigate();
+  const [search, setSearch] = useState("");
 
-  const handleSearch = () => {
-    if (searchQuery.trim() !== "") {
-      // Redirect to customer-list page with search query as URL param
-      navigate(`/customer-list?search=${encodeURIComponent(searchQuery)}`);
-      setSearchQuery(""); // Clear search input
-    }
+  const handleSearch = (e) => {
+    e.preventDefault();
+    navigate(`/customer-list?search=${encodeURIComponent(search)}`);
   };
 
   return (
     <nav className="navbar">
-      <div className="navbar-logo">
-        <Link to="/home">Sonal Designer Boutique</Link>
+      <div className="nav-logo">Sonal Designer Boutique</div>
+      <div className="nav-buttons">
+        <button onClick={() => navigate("/home")}>Home</button>
+        <button onClick={() => navigate("/add-customer")}>Add Customer</button>
+        <button onClick={() => navigate("/customer-list")}>Customer List</button>
       </div>
-
-      <div className="navbar-links">
-        <Link to="/add-customer">Add Customer</Link>
-        <Link to="/customer-list">Customer List</Link>
-
+      <form className="nav-search" onSubmit={handleSearch}>
         <input
           type="text"
           placeholder="Search customer..."
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          className="navbar-search"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
         />
-        <button onClick={handleSearch} className="navbar-search-btn">
-          Search
-        </button>
-      </div>
+        <button type="submit">Search</button>
+      </form>
     </nav>
   );
 }
