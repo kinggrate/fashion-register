@@ -1,0 +1,103 @@
+.login-page {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #fde2e4, #fff);
+}
+
+.login-card {
+  width: 100%;
+  max-width: 360px;
+  background: white;
+  padding: 28px;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+.login-card h1 {
+  text-align: center;
+  font-size: 24px;
+  font-weight: 700;
+  color: #d6336c;
+  margin-bottom: 24px;
+}
+
+.login-card input {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 16px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+}
+
+.login-card input:focus {
+  outline: none;
+  border-color: #d6336c;
+}
+
+.login-card button {
+  width: 100%;
+  padding: 12px;
+  border-radius: 8px;
+  border: none;
+  background: #d6336c;
+  color: white;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.login-card button:hover {
+  background: #b82b5a;
+}
+.dashboard-page {
+  padding: 32px;
+}
+
+.add-customer input {
+  padding: 8px;
+  margin: 4px 8px 4px 0;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+.add-customer button {
+  padding: 8px 16px;
+  border-radius: 6px;
+  background: #d6336c;
+  color: white;
+  border: none;
+  cursor: pointer;
+  margin-top: 4px;
+}
+
+.customer-list {
+  margin-top: 24px;
+}
+
+.customer-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px 8px;
+  border-bottom: 1px solid #eee;
+}
+
+.customer-item button {
+  margin-left: 8px;
+  padding: 4px 8px;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+}
+
+.customer-item button:first-child {
+  background: #ffc107;
+  color: white;
+}
+
+.customer-item button:last-child {
+  background: #dc3545;
+  color: white;
+}
