@@ -1,0 +1,32 @@
+.home-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 80vh;
+  background: url("/logo-watermark.png") center center / contain no-repeat;
+  padding: 20px;
+  text-align: center;
+}
+
+.home-content {
+  background-color: rgba(255, 255, 255, 0.9);
+  padding: 30px;
+  border-radius: 15px;
+  max-width: 700px;
+}
+
+.home-content h1 {
+  color: #b45f7d;
+  margin-bottom: 15px;
+}
+
+.home-content p {
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.home-image {
+  max-width: 100%;
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}

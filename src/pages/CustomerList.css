@@ -1,0 +1,42 @@
+.customer-list-page {
+  max-width: 900px;
+  margin: 30px auto;
+  padding: 20px;
+}
+
+.customer-list-page h2 {
+  text-align: center;
+  color: #b45f7d;
+  margin-bottom: 20px;
+}
+
+.customer-card {
+  padding: 15px;
+  margin-bottom: 15px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+  background-color: #fff;
+}
+
+.customer-card h3 {
+  color: #b45f7d;
+  margin-bottom: 8px;
+}
+
+.customer-card p {
+  margin: 4px 0;
+}
+
+.customer-card button {
+  margin-top: 10px;
+  padding: 6px 10px;
+  background-color: #b45f7d;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.customer-card button:hover {
+  background-color: #a03f66;
+}
