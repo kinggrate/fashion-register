@@ -184,16 +184,16 @@ export default function CustomerList() {
     </>
   ) : (
     <>
-      <h2>{selectedCustomer.name}</h2>
+      <h2>{selectedCustomer ? selectedCustomer.name : "Select a customer"}</h2>
 
       <p>
         <strong>Phone:</strong>{" "}
-        {selectedCustomer.phone || "—"}
+        {selectedCustomer?.phone || "—"}
       </p>
 
       <p>
         <strong>Email:</strong>{" "}
-        {selectedCustomer.email || "—"}
+        {selectedCustomer?.email || "—"}
       </p>
     </>
   )}
@@ -218,8 +218,10 @@ export default function CustomerList() {
             <div className="actions">
               {!isEditing ? (
                 <>
-                  <button onClick={startEdit}>Edit</button>
-                  <button className="danger" onClick={handleDelete}>
+                  <button onClick={() => selectedCustomer && startEdit()} disabled={!selectedCustomer}>
+                    Edit
+                  </button>
+                  <button className="danger" onClick={() => selectedCustomer && handleDelete()} disabled={!selectedCustomer}>
                     Delete
                   </button>
                 </>
