@@ -1,101 +1,94 @@
-.customer-list-page {
-  max-width: 1000px;
-  margin: 30px auto;
+.customer-page {
+  display: flex;
+  height: 100vh;
+  background: #000;
+  color: rgb(251, 255, 19);
+}
+
+/* LEFT PANEL */
+.customer-list {
+  width: 30%;
+  border-right: 1px solid rgba(251, 255, 19, 0.3);
   padding: 20px;
 }
 
-.customer-list-page h2 {
-  text-align: center;
-  color: #b45f7d;
-  margin-bottom: 20px;
+.customer-list h2 {
+  margin-bottom: 15px;
 }
 
-.customer-cards {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-}
-
-.customer-card {
-  flex: 1 1 300px;
-  background-color: #fff;
-  border-radius: 10px;
-  padding: 10px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.customer-card.expanded {
-  background-color: #f9f1f6;
-}
-
-.card-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.card-header h3 {
-  margin: 0;
-  color: #b45f7d;
-}
-
-.card-body {
-  margin-top: 10px;
-}
-
-.measurements {
-  margin-top: 10px;
-}
-
-.measurements p {
-  margin: 2px 0;
-  font-size: 14px;
-}
-
-.card-buttons {
-  margin-top: 10px;
-}
-
-.card-buttons button {
-  margin-right: 10px;
-  padding: 6px 12px;
-  background-color: #b45f7d;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.card-buttons button:hover {
-  background-color: #a03f66;
-}
-
-.edit-form input {
-  display: block;
+.customer-list input {
   width: 100%;
-  padding: 6px;
-  margin-bottom: 5px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
+  padding: 10px;
+  background: #000;
+  border: 1px solid rgba(251, 255, 19, 0.5);
+  color: rgb(251, 255, 19);
+  margin-bottom: 15px;
 }
 
-.edit-form button {
-  margin-top: 5px;
-  margin-right: 10px;
-  padding: 8px 14px;
-  border: none;
-  border-radius: 5px;
+.list {
+  overflow-y: auto;
+  max-height: calc(100vh - 160px);
+}
+
+.list-item {
+  padding: 10px;
+  border-radius: 6px;
   cursor: pointer;
+  margin-bottom: 8px;
+  background: #111;
+  transition: all 0.2s ease;
 }
 
-.edit-form button:first-child {
-  background-color: #4caf50;
-  color: white;
+.list-item span {
+  display: block;
+  font-size: 0.8rem;
+  opacity: 0.8;
 }
 
-.edit-form button:last-child {
-  background-color: #f44336;
-  color: white;
+.list-item:hover,
+.list-item.active {
+  box-shadow: 0 0 12px rgba(251, 255, 19, 0.6);
+}
+
+/* RIGHT PANEL */
+.customer-details {
+  width: 70%;
+  padding: 30px;
+  overflow-y: auto;
+}
+
+.placeholder {
+  opacity: 0.6;
+  font-size: 1.2rem;
+  margin-top: 50px;
+}
+
+.details-section {
+  margin-top: 20px;
+  padding: 15px;
+  border: 1px solid rgba(251, 255, 19, 0.3);
+  border-radius: 10px;
+}
+
+.details-section h3 {
+  margin-bottom: 10px;
+}
+
+.details-section p {
+  font-size: 1rem;
+  margin: 4px 0;
+}
+
+/* BUTTONS */
+.action-buttons {
+  margin-top: 30px;
+}
+
+.delete-btn {
+  padding: 10px 20px;
+  background: red;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
 }
