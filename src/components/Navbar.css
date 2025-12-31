@@ -6,6 +6,8 @@
   padding: 10px 20px;
   color: rgb(0, 0, 0);
   flex-wrap: wrap;
+  border: 1px solid rgba(251, 255, 19, 0.3);
+
 }
 
 .nav-logo {
@@ -21,6 +23,7 @@
   padding: 6px 12px;
   border-radius: 5px;
   cursor: pointer;
+  transition: all 0.4s ease;
 }
 
 .nav-buttons button:hover {
@@ -43,7 +46,7 @@
   border-radius: 0 5px 5px 0;
   border: none;
   background-color: #fff;
-  color: #b45f7d;
+  color: #000000;
   cursor: pointer;
 }
 
