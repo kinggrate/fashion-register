@@ -158,31 +158,47 @@ export default function CustomerList() {
         </div>
       </div>
 
-      {/* DETAILS PANEL */}
-      <div className={`customer-details ${selectedCustomer ? "open" : ""}`}>
-        {!selectedCustomer ? (
-          <p className="placeholder">Select a customer</p>
-        ) : (
-          <>
-            <div className="details-header">
-              {isEditing ? (
-                <>
-                  <input
-                    value={editData.name || ""}
-                    onChange={(e) => handleChange("name", e.target.value)}
-                  />
-                  <input
-                    value={editData.phone || ""}
-                    onChange={(e) => handleChange("phone", e.target.value)}
-                  />
-                </>
-              ) : (
-                <>
-                  <h2>{selectedCustomer.name}</h2>
-                  <p>{selectedCustomer.phone}</p>
-                </>
-              )}
-            </div>
+      <div className="details-header">
+  {isEditing ? (
+    <>
+      <input
+        className="edit-input"
+        placeholder="Customer Name"
+        value={editData.name || ""}
+        onChange={(e) => handleChange("name", e.target.value)}
+      />
+
+      <input
+        className="edit-input"
+        placeholder="Phone Number"
+        value={editData.phone || ""}
+        onChange={(e) => handleChange("phone", e.target.value)}
+      />
+
+      <input
+        className="edit-input"
+        placeholder="Email Address"
+        value={editData.email || ""}
+        onChange={(e) => handleChange("email", e.target.value)}
+      />
+    </>
+  ) : (
+    <>
+      <h2>{selectedCustomer.name}</h2>
+
+      <p>
+        <strong>Phone:</strong>{" "}
+        {selectedCustomer.phone || "—"}
+      </p>
+
+      <p>
+        <strong>Email:</strong>{" "}
+        {selectedCustomer.email || "—"}
+      </p>
+    </>
+  )}
+</div>
+
 
             <div className="details-section">
               <h3>Blouse Measurements</h3>
@@ -214,9 +230,6 @@ export default function CustomerList() {
                 </>
               )}
             </div>
-          </>
-        )}
-      </div>
-    </div>
+  </div>
   );
 }
