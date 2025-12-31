@@ -31,25 +31,3 @@
   transform: translate(-4px);
 }
 
-.nav-search {
-  display: flex;
-}
-
-.nav-search input {
-  padding: 6px;
-  border-radius: 5px 0 0 5px;
-  border: none;
-}
-
-.nav-search button {
-  padding: 6px 10px;
-  border-radius: 0 5px 5px 0;
-  border: none;
-  background-color: #fff;
-  color: #000000;
-  cursor: pointer;
-}
-
-.nav-search button:hover {
-  background-color: #f1f1f1;
-}
