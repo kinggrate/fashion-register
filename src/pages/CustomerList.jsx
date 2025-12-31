@@ -3,6 +3,14 @@ import "./CustomerList.css";
 import { collection, getDocs, deleteDoc, doc } from "firebase/firestore";
 import { db } from "../firebase";
 
+const renderMeasurements = (data, fields) => {
+  return fields.map((field) => (
+    <p key={field.key}>
+      <span>{field.label}:</span> {data[field.key] || "—"}
+    </p>
+  ));
+};
+
 export default function CustomerList() {
   const [customers, setCustomers] = useState([]);
   const [selectedCustomer, setSelectedCustomer] = useState(null);
@@ -14,15 +22,15 @@ export default function CustomerList() {
 
   const fetchCustomers = async () => {
     const snapshot = await getDocs(collection(db, "customers"));
-    const data = snapshot.docs.map((doc) => ({
-      id: doc.id,
-      ...doc.data(),
+    const data = snapshot.docs.map((d) => ({
+      id: d.id,
+      ...d.data(),
     }));
     setCustomers(data);
   };
 
   const handleDelete = async (id) => {
-    if (!window.confirm("Delete this customer?")) return;
+    if (!window.confirm("Delete this customer permanently?")) return;
     await deleteDoc(doc(db, "customers", id));
     setSelectedCustomer(null);
     fetchCustomers();
@@ -32,41 +40,66 @@ export default function CustomerList() {
     c.name?.toLowerCase().includes(search.toLowerCase())
   );
 
+  // 🔥 EXACT measurement keys (MATCH AddCustomer)
+  const blouseFields = [
+    { key: "shoulder", label: "Shoulder" },
+    { key: "upperChest", label: "Upper Chest" },
+    { key: "bust", label: "Bust" },
+    { key: "waist", label: "Waist" },
+    { key: "lowerChest", label: "Lower Chest" },
+    { key: "frontLength", label: "Front Length" },
+    { key: "backLength", label: "Back Length" },
+    { key: "sleeves", label: "Sleeves" },
+  ];
+
+  const dressFields = [
+    { key: "dressShoulder", label: "Shoulder" },
+    { key: "dressChest", label: "Chest" },
+    { key: "dressWaist", label: "Waist" },
+    { key: "dressHip", label: "Hip" },
+    { key: "dressLength", label: "Length" },
+  ];
+
+  const pantFields = [
+    { key: "pantLength", label: "Length" },
+    { key: "pantWaist", label: "Waist" },
+    { key: "pantHip", label: "Hip" },
+    { key: "pantKnee", label: "Knee" },
+    { key: "pantThigh", label: "Thigh" },
+    { key: "pantBottom", label: "Bottom" },
+  ];
+
   return (
     <div className="customer-page">
-      {/* LEFT PANEL */}
+      {/* LEFT LIST */}
       <div className="customer-list">
         <h2>Customers</h2>
-
         <input
-          type="text"
           placeholder="Search customer..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
 
         <div className="list">
-          {filteredCustomers.map((customer) => (
+          {filteredCustomers.map((c) => (
             <div
-              key={customer.id}
+              key={c.id}
               className={`list-item ${
-                selectedCustomer?.id === customer.id ? "active" : ""
+                selectedCustomer?.id === c.id ? "active" : ""
               }`}
-              onClick={() => setSelectedCustomer(customer)}
+              onClick={() => setSelectedCustomer(c)}
             >
-              <strong>{customer.name}</strong>
-              <span>{customer.phone}</span>
+              <strong>{c.name}</strong>
+              <span>{c.phone}</span>
             </div>
           ))}
         </div>
       </div>
 
-      {/* RIGHT PANEL */}
+      {/* RIGHT DETAILS */}
       <div className="customer-details">
         {!selectedCustomer ? (
-          <p className="placeholder">
-            Select a customer to view details
-          </p>
+          <p className="placeholder">Select a customer</p>
         ) : (
           <>
             <h2>{selectedCustomer.name}</h2>
@@ -74,42 +107,22 @@ export default function CustomerList() {
 
             <div className="details-section">
               <h3>Blouse Measurements</h3>
-              {Object.entries(selectedCustomer.blouse || {}).map(
-                ([key, value]) => (
-                  <p key={key}>
-                    {key.replace(/_/g, " ")}: {value}
-                  </p>
-                )
-              )}
+              {renderMeasurements(selectedCustomer, blouseFields)}
             </div>
 
             <div className="details-section">
               <h3>Dress Measurements</h3>
-              {Object.entries(selectedCustomer.dress || {}).map(
-                ([key, value]) => (
-                  <p key={key}>
-                    {key.replace(/_/g, " ")}: {value}
-                  </p>
-                )
-              )}
+              {renderMeasurements(selectedCustomer, dressFields)}
             </div>
 
             <div className="details-section">
               <h3>Pant Measurements</h3>
-              {Object.entries(selectedCustomer.pant || {}).map(
-                ([key, value]) => (
-                  <p key={key}>
-                    {key.replace(/_/g, " ")}: {value}
-                  </p>
-                )
-              )}
+              {renderMeasurements(selectedCustomer, pantFields)}
             </div>
 
-            <div className="action-buttons">
-              <button className="delete-btn" onClick={() => handleDelete(selectedCustomer.id)}>
-                Delete
-              </button>
-            </div>
+            <button className="delete-btn" onClick={() => handleDelete(selectedCustomer.id)}>
+              Delete Customer
+            </button>
           </>
         )}
       </div>
