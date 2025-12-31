@@ -1,121 +1,78 @@
-/* ---------- PAGE BASE ---------- */
-.home-page {
-  min-height: calc(100vh - 64px);
-  background: radial-gradient(circle at top, #111 0%, #000 70%);
-  padding: 50px 20px;
-  font-family: "Segoe UI", sans-serif;
-  color: #000000;
+/* Main container */
+.home-container {
+  min-height: 100vh;
+  background-color: #000; /* BLACK background */
+  color: rgb(251, 255, 19); /* Yellow text */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-/* ---------- HERO SECTION ---------- */
+/* Hero section */
 .home-hero {
   text-align: center;
-  margin-bottom: 60px;
+  padding: 60px 20px 40px;
 }
 
 .home-logo {
   width: 140px;
   height: auto;
   margin-bottom: 20px;
-  opacity: 0.95;
-  transition: transform 0.4s ease, filter 0.4s ease;
-  filter: drop-shadow(0 0 8px rgba(251, 255, 19, 0.3));
-}
-
-/* Logo interaction */
-.home-logo:hover,
-.home-logo:active {
-  transform: scale(1.07);
-  filter: drop-shadow(0 0 18px rgba(251, 255, 19, 0.8));
+  filter: drop-shadow(0 0 12px rgba(251, 255, 19, 0.6));
 }
 
 .home-hero h1 {
-  font-size: 36px;
-  color: rgb(255, 255, 255);
+  font-size: 2.6rem;
   margin-bottom: 10px;
-  letter-spacing: 1px;
+  color: white;
 }
 
 .home-hero p {
-  font-size: 16px;
-  color: rgba(251, 255, 19, 0.8);
-  max-width: 600px;
-  margin: 0 auto;
+  font-size: 1.1rem;
+  opacity: 0.9;
 }
 
-/* ---------- INFO CARDS SECTION ---------- */
+/* Info section */
 .home-info {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 24px;
-  max-width: 1000px;
-  margin: 0 auto;
+  gap: 25px;
+  width: 100%;
+  max-width: 1100px;
+  padding: 40px 20px 60px;
 }
 
-/* ---------- CARD STYLING ---------- */
+/* Cards */
 .info-card {
-  background: linear-gradient(145deg, #0b0b0b, #141414);
-  padding: 26px;
-  border-radius: 16px;
-  border: 1px solid rgba(251, 255, 19, 0.15);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.9);
+  background: #111;
+  border: 1px solid rgba(251, 255, 19, 0.3);
+  border-radius: 14px;
+  padding: 25px;
   text-align: center;
-  cursor: pointer;
-  transition: all 0.35s ease;
-  position: relative;
-  overflow: hidden;
+  transition: all 0.3s ease;
 }
 
-/* Neon glow layer */
-.info-card::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: 16px;
-  background: linear-gradient(
-    120deg,
-    rgba(251, 255, 19, 0.25),
-    rgba(251, 255, 19, 0.05),
-    transparent
-  );
-  opacity: 0;
-  transition: opacity 0.35s ease;
-  pointer-events: none;
+/* Glow on hover / touch */
+.info-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 0 25px rgba(251, 255, 19, 0.6);
 }
 
-/* Hover / touch glow */
-.info-card:hover,
-.info-card:active {
-  transform: translateY(-10px) scale(1.02);
-  box-shadow:
-    0 0 25px rgba(251, 255, 19, 0.35),
-    0 20px 45px rgba(0, 0, 0, 1);
-  border-color: rgb(251, 255, 19);
-}
-
-.info-card:hover::before,
-.info-card:active::before {
-  opacity: 1;
-}
-
-/* Card text */
 .info-card h3 {
-  font-size: 20px;
-  color: rgb(251, 255, 19);
-  margin-bottom: 10px;
-  letter-spacing: 0.5px;
+  margin-bottom: 12px;
+  font-size: 1.3rem;
 }
 
 .info-card p {
-  font-size: 14px;
-  color: #bbbbbb;
-  line-height: 1.6;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  opacity: 0.9;
 }
 
-/* ---------- MOBILE POLISH ---------- */
+/* Mobile friendliness */
 @media (max-width: 600px) {
   .home-hero h1 {
-    font-size: 28px;
+    font-size: 2rem;
   }
 
   .home-logo {
