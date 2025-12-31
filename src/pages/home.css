@@ -4,7 +4,7 @@
   background: radial-gradient(circle at top, #111 0%, #000 70%);
   padding: 50px 20px;
   font-family: "Segoe UI", sans-serif;
-  color: #ffffff;
+  color: #000000;
 }
 
 /* ---------- HERO SECTION ---------- */
@@ -31,14 +31,14 @@
 
 .home-hero h1 {
   font-size: 36px;
-  color: rgb(251, 255, 19);
+  color: rgb(255, 255, 255);
   margin-bottom: 10px;
   letter-spacing: 1px;
 }
 
 .home-hero p {
   font-size: 16px;
-  color: #cccccc;
+  color: rgba(251, 255, 19, 0.8);
   max-width: 600px;
   margin: 0 auto;
 }

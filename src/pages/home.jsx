@@ -1,11 +1,14 @@
 import React from "react";
 import "./home.css";
+import logo from "../assets/logo.png"; // <-- logo import
 
 export default function Home() {
   return (
     <div className="home-container">
       {/* Hero Section */}
       <section className="home-hero">
+        <img src={logo} alt="Sonal Designer Boutique Logo" className="home-logo" />
+
         <h1>Sonal Designer Boutique</h1>
         <p>Custom Blouse • Dress • Designer Wear</p>
       </section>
