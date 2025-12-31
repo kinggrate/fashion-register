@@ -2,14 +2,14 @@
   max-width: 900px;
   margin: 30px auto;
   padding: 20px;
-  background-color: #fefefe;
+  background-color: #000000;
   border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 10px rgb(255, 255, 255);
 }
 
 .add-customer-page h2 {
   text-align: center;
-  color: #b45f7d;
+  color: #e6ff0a;
   margin-bottom: 20px;
 }
 
@@ -20,7 +20,7 @@
 
 .customer-form h3 {
   margin-top: 20px;
-  color: #b45f7d;
+  color: #ffffff;
   margin-bottom: 10px;
 }
 
@@ -40,7 +40,7 @@
 .customer-form button {
   margin-top: 20px;
   padding: 12px;
-  background-color: #b45f7d;
+  background-color: #000000;
   color: white;
   font-weight: bold;
   border: none;
@@ -49,5 +49,5 @@
 }
 
 .customer-form button:hover {
-  background-color: #a03f66;
+  background-color: #000000;
 }
