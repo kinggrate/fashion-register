@@ -1,97 +1,217 @@
 import React, { useEffect, useState } from "react";
-import { collection, getDocs } from "firebase/firestore";
-import { db } from "../firebase";
 import "./CustomerList.css";
+import {
+  collection,
+  getDocs,
+  deleteDoc,
+  doc,
+  updateDoc,
+} from "firebase/firestore";
+import { db } from "../firebase";
+
+/* ---------- Helper ---------- */
+const renderMeasurements = (data, fields, isEditing, onChange) =>
+  fields.map((field) => (
+    <div className="measurement-row" key={field.key}>
+      <span>{field.label}</span>
+      {isEditing ? (
+        <input
+          value={data?.[field.key] || ""}
+          onChange={(e) => onChange(field.key, e.target.value)}
+        />
+      ) : (
+        <strong>{data?.[field.key] || "—"}</strong>
+      )}
+    </div>
+  ));
 
 export default function CustomerList() {
   const [customers, setCustomers] = useState([]);
   const [selectedCustomer, setSelectedCustomer] = useState(null);
+  const [search, setSearch] = useState("");
+  const [isEditing, setIsEditing] = useState(false);
+  const [editData, setEditData] = useState({});
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    const fetchCustomers = async () => {
-      const snapshot = await getDocs(collection(db, "customers"));
-      const list = snapshot.docs.map(doc => ({
-        id: doc.id,
-        ...doc.data()
-      }));
-      setCustomers(list);
-    };
     fetchCustomers();
   }, []);
 
+  const fetchCustomers = async () => {
+    setLoading(true);
+    const snapshot = await getDocs(collection(db, "customers"));
+    setCustomers(snapshot.docs.map((d) => ({ id: d.id, ...d.data() })));
+    setLoading(false);
+  };
+
+  /* ---------- EDIT LOGIC ---------- */
+  const startEdit = () => {
+    setEditData({ ...selectedCustomer });
+    setIsEditing(true);
+  };
+
+  const cancelEdit = () => {
+    setIsEditing(false);
+    setEditData({});
+  };
+
+  const saveEdit = async () => {
+    const newName = editData.name?.trim().toLowerCase();
+
+    // 🔒 Duplicate name check (excluding self)
+    const duplicate = customers.find(
+      (c) =>
+        c.name?.toLowerCase() === newName &&
+        c.id !== selectedCustomer.id
+    );
+
+    if (duplicate) {
+      alert("A customer with this name already exists.");
+      return;
+    }
+
+    setLoading(true);
+    await updateDoc(doc(db, "customers", selectedCustomer.id), editData);
+    setSelectedCustomer(editData);
+    setIsEditing(false);
+    await fetchCustomers();
+    setLoading(false);
+  };
+
+  /* ---------- DELETE ---------- */
+  const handleDelete = async () => {
+    if (!window.confirm("Delete this customer permanently?")) return;
+    setLoading(true);
+    await deleteDoc(doc(db, "customers", selectedCustomer.id));
+    setSelectedCustomer(null);
+    await fetchCustomers();
+    setLoading(false);
+  };
+
+  const handleChange = (key, value) => {
+    setEditData((prev) => ({ ...prev, [key]: value }));
+  };
+
+  const filteredCustomers = customers.filter((c) =>
+    c.name?.toLowerCase().includes(search.toLowerCase())
+  );
+
+  /* ---------- FIELD MAPS ---------- */
+  const blouseFields = [
+    { key: "shoulder", label: "Shoulder" },
+    { key: "upperChest", label: "Upper Chest" },
+    { key: "bust", label: "Bust" },
+    { key: "waist", label: "Waist" },
+    { key: "lowerChest", label: "Lower Chest" },
+    { key: "frontLength", label: "Front Length" },
+    { key: "backLength", label: "Back Length" },
+    { key: "sleeves", label: "Sleeves" },
+  ];
+
+  const dressFields = [
+    { key: "dressShoulder", label: "Shoulder" },
+    { key: "dressChest", label: "Chest" },
+    { key: "dressWaist", label: "Waist" },
+    { key: "dressHip", label: "Hip" },
+    { key: "dressLength", label: "Length" },
+  ];
+
+  const pantFields = [
+    { key: "pantLength", label: "Length" },
+    { key: "pantWaist", label: "Waist" },
+    { key: "pantHip", label: "Hip" },
+    { key: "pantKnee", label: "Knee" },
+    { key: "pantThigh", label: "Thigh" },
+    { key: "pantBottom", label: "Bottom" },
+  ];
+
+  const data = isEditing ? editData : selectedCustomer;
+
   return (
     <div className="customer-page">
-      {/* LEFT PANEL */}
+      {/* LEFT LIST */}
       <div className="customer-list">
         <h2>Customers</h2>
+        <input
+          placeholder="Search customer..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
 
-        {customers.map(customer => (
-          <div
-            key={customer.id}
-            className="customer-item"
-            onClick={() => setSelectedCustomer(customer)}
-          >
-            <strong>{customer.name}</strong>
-            <span>{customer.phone}</span>
-          </div>
-        ))}
+        <div className="list">
+          {loading && <p>Loading...</p>}
+          {filteredCustomers.map((c) => (
+            <div
+              key={c.id}
+              className={`list-item ${
+                selectedCustomer?.id === c.id ? "active" : ""
+              }`}
+              onClick={() => {
+                setSelectedCustomer(c);
+                setIsEditing(false);
+              }}
+            >
+              <strong>{c.name}</strong>
+              <span>{c.phone}</span>
+            </div>
+          ))}
+        </div>
       </div>
 
-      {/* RIGHT / MOBILE PANEL */}
-      <div className={`customer-details ${selectedCustomer ? "show" : ""}`}>
+      {/* DETAILS PANEL */}
+      <div className={`customer-details ${selectedCustomer ? "open" : ""}`}>
         {!selectedCustomer ? (
-          <p className="placeholder-text">
-            Select a customer to view details
-          </p>
+          <p className="placeholder">Select a customer</p>
         ) : (
           <>
-            {/* MOBILE BACK BUTTON */}
-            <button
-              className="back-btn"
-              onClick={() => setSelectedCustomer(null)}
-            >
-              ← Back
-            </button>
-
-            <h2>{selectedCustomer.name}</h2>
-            <p className="phone">{selectedCustomer.phone}</p>
-
-            {/* CLOUD MEASUREMENTS */}
-            <div className="measure-box">
-              <h3>Cloud Measurements</h3>
-              {Object.entries(selectedCustomer.cloudMeasurements || {}).map(
-                ([key, value]) => (
-                  <p key={key}>
-                    <span>{key}</span>
-                    <strong>{value}</strong>
-                  </p>
-                )
+            <div className="details-header">
+              {isEditing ? (
+                <>
+                  <input
+                    value={editData.name || ""}
+                    onChange={(e) => handleChange("name", e.target.value)}
+                  />
+                  <input
+                    value={editData.phone || ""}
+                    onChange={(e) => handleChange("phone", e.target.value)}
+                  />
+                </>
+              ) : (
+                <>
+                  <h2>{selectedCustomer.name}</h2>
+                  <p>{selectedCustomer.phone}</p>
+                </>
               )}
             </div>
 
-            {/* DRESS MEASUREMENTS */}
-            <div className="measure-box">
+            <div className="details-section">
+              <h3>Blouse Measurements</h3>
+              {renderMeasurements(data, blouseFields, isEditing, handleChange)}
+            </div>
+
+            <div className="details-section">
               <h3>Dress Measurements</h3>
-              {Object.entries(selectedCustomer.dressMeasurements || {}).map(
-                ([key, value]) => (
-                  <p key={key}>
-                    <span>{key}</span>
-                    <strong>{value}</strong>
-                  </p>
-                )
-              )}
+              {renderMeasurements(data, dressFields, isEditing, handleChange)}
             </div>
 
-            {/* BACK MEASUREMENTS */}
-            <div className="measure-box">
-              <h3>Back Measurements</h3>
-              {Object.entries(selectedCustomer.backMeasurements || {}).map(
-                ([key, value]) => (
-                  <p key={key}>
-                    <span>{key}</span>
-                    <strong>{value}</strong>
-                  </p>
-                )
+            <div className="details-section">
+              <h3>Pant Measurements</h3>
+              {renderMeasurements(data, pantFields, isEditing, handleChange)}
+            </div>
+
+            <div className="actions">
+              {!isEditing ? (
+                <>
+                  <button onClick={startEdit}>Edit</button>
+                  <button className="danger" onClick={handleDelete}>
+                    Delete
+                  </button>
+                </>
+              ) : (
+                <>
+                  <button onClick={saveEdit}>Save</button>
+                  <button onClick={cancelEdit}>Cancel</button>
+                </>
               )}
             </div>
           </>

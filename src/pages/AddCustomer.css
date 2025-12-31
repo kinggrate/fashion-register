@@ -1,68 +1,38 @@
 .add-customer-page {
-  max-width: 900px;
-  margin: 30px auto;
+  background: #0b0b0b;
+  min-height: 100vh;
   padding: 20px;
-  background-color: #000000; /* BLACK background */
-  border-radius: 10px;
-  box-shadow: 0 0 25px rgba(251, 255, 19, 0.4); /* yellow glow */
-}
-
-.add-customer-page h2 {
-  text-align: center;
-  color: rgb(251, 255, 19); /* YELLOW */
-  margin-bottom: 20px;
+  color: #fff;
 }
 
 .customer-form {
-  display: flex;
-  flex-direction: column;
+  max-width: 900px;
+  margin: auto;
 }
 
-.customer-form h3 {
-  margin-top: 20px;
-  color: rgb(251, 255, 19);
-  margin-bottom: 10px;
+.customer-form input {
+  width: 100%;
+  padding: 12px;
+  margin: 6px 0;
+  background: #1a1a1a;
+  border: 1px solid #333;
+  color: #fff;
+  border-radius: 6px;
 }
 
 .measurements-section {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-  gap: 10px;
-  margin-bottom: 15px;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 8px;
 }
 
-.customer-form input {
-  padding: 8px;
-  border-radius: 5px;
-  background-color: #000;
-  border: 1px solid rgba(251, 255, 19, 0.6);
-  color: rgb(251, 255, 19);
-}
-
-.customer-form input::placeholder {
-  color: rgba(251, 255, 19, 0.6);
-}
-
-.customer-form input:focus {
-  outline: none;
-  border-color: rgb(251, 255, 19);
-  box-shadow: 0 0 10px rgba(251, 255, 19, 0.7);
-}
-
-.customer-form button {
+button {
   margin-top: 20px;
-  padding: 12px;
-  background-color: rgb(251, 255, 19);
-  color: #000000;
-  font-weight: bold;
+  padding: 14px;
+  width: 100%;
+  background: #2563eb;
   border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.customer-form button:hover {
-  background-color: #000000;
-  color: rgb(251, 255, 19);
-  box-shadow: 0 0 20px rgba(251, 255, 19, 0.8);
+  color: white;
+  font-weight: bold;
+  border-radius: 8px;
 }

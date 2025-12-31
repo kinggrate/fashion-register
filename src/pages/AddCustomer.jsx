@@ -1,17 +1,25 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { db } from "../firebase"; // Firestore instance
-import { collection, addDoc } from "firebase/firestore";
+import React, { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { db } from "../firebase";
+import {
+  collection,
+  addDoc,
+  doc,
+  getDoc,
+  updateDoc,
+  getDocs,
+} from "firebase/firestore";
 import "./AddCustomer.css";
 
 export default function AddCustomer() {
   const navigate = useNavigate();
+  const { id } = useParams();
+  const isEditMode = Boolean(id);
 
   const [customer, setCustomer] = useState({
     name: "",
     email: "",
     phone: "",
-    // Blouse measurements
     shoulder: "",
     upperChest: "",
     bust: "",
@@ -27,7 +35,6 @@ export default function AddCustomer() {
     frontNeck: "",
     readyShoulder: "",
     neckRound: "",
-    // Dress measurements
     dressShoulder: "",
     dressChest: "",
     dressWaist: "",
@@ -38,7 +45,6 @@ export default function AddCustomer() {
     dressSleeves: "",
     dressPenaltyCircle: "",
     dressNeckRound: "",
-    // Pant measurements
     pantLength: "",
     pantWaist: "",
     pantHip: "",
@@ -47,133 +53,115 @@ export default function AddCustomer() {
     pantBottom: "",
   });
 
+  /* FETCH CUSTOMER IN EDIT MODE */
+  useEffect(() => {
+    if (!isEditMode) return;
+
+    const fetchCustomer = async () => {
+      const snap = await getDoc(doc(db, "customers", id));
+      if (!snap.exists()) {
+        alert("Customer not found");
+        navigate("/home");
+        return;
+      }
+      setCustomer(snap.data());
+    };
+
+    fetchCustomer();
+  }, [id, isEditMode, navigate]);
+
   const handleChange = (e) => {
     setCustomer({ ...customer, [e.target.name]: e.target.value });
   };
 
+  /* 🔒 DUPLICATE NAME CHECK */
+  const isDuplicateName = async () => {
+    const snap = await getDocs(collection(db, "customers"));
+    const nameLower = customer.name.trim().toLowerCase();
+
+    return snap.docs.some((d) => {
+      const data = d.data();
+      if (isEditMode && d.id === id) return false;
+      return data.name?.toLowerCase() === nameLower;
+    });
+  };
+
   const handleSave = async () => {
+    if (!customer.name.trim()) {
+      alert("Customer name is required");
+      return;
+    }
+
+    if (await isDuplicateName()) {
+      alert("A customer with this name already exists.");
+      return;
+    }
+
     try {
-      await addDoc(collection(db, "customers"), customer);
-      alert("Customer saved!");
+      if (isEditMode) {
+        await updateDoc(doc(db, "customers", id), customer);
+        alert("Customer updated!");
+      } else {
+        await addDoc(collection(db, "customers"), customer);
+        alert("Customer saved!");
+      }
       navigate("/home");
-    } catch (error) {
-      console.error(error);
-      alert("Error saving customer!");
+    } catch (err) {
+      console.error(err);
+      alert("Error saving customer");
     }
   };
 
-  // Arrays for mapping fields
+  /* FIELD ARRAYS */
   const blouseFields = [
-    { label: "Shoulder", name: "shoulder" },
-    { label: "Upper Chest", name: "upperChest" },
-    { label: "Bust", name: "bust" },
-    { label: "Waist", name: "waist" },
-    { label: "Lower Chest", name: "lowerChest" },
-    { label: "Bust Point", name: "bustPoint" },
-    { label: "Bust to Bust", name: "bustToBust" },
-    { label: "Front Length", name: "frontLength" },
-    { label: "Back Length", name: "backLength" },
-    { label: "Sleeves", name: "sleeves" },
-    { label: "Penalty Circle", name: "penaltyCircle" },
-    { label: "Back Neck", name: "backNeck" },
-    { label: "Front Neck", name: "frontNeck" },
-    { label: "Ready Shoulder", name: "readyShoulder" },
-    { label: "Neck Round", name: "neckRound" },
+    "shoulder","upperChest","bust","waist","lowerChest","bustPoint",
+    "bustToBust","frontLength","backLength","sleeves","penaltyCircle",
+    "backNeck","frontNeck","readyShoulder","neckRound",
   ];
 
   const dressFields = [
-    { label: "Shoulder", name: "dressShoulder" },
-    { label: "Chest", name: "dressChest" },
-    { label: "Waist", name: "dressWaist" },
-    { label: "Hip", name: "dressHip" },
-    { label: "Length", name: "dressLength" },
-    { label: "Front Neck", name: "dressFrontNeck" },
-    { label: "Back Neck", name: "dressBackNeck" },
-    { label: "Sleeves", name: "dressSleeves" },
-    { label: "Penalty Circle", name: "dressPenaltyCircle" },
-    { label: "Neck Round", name: "dressNeckRound" },
+    "dressShoulder","dressChest","dressWaist","dressHip","dressLength",
+    "dressFrontNeck","dressBackNeck","dressSleeves",
+    "dressPenaltyCircle","dressNeckRound",
   ];
 
   const pantFields = [
-    { label: "Length", name: "pantLength" },
-    { label: "Waist", name: "pantWaist" },
-    { label: "Hip", name: "pantHip" },
-    { label: "Knee", name: "pantKnee" },
-    { label: "Thigh", name: "pantThigh" },
-    { label: "Bottom", name: "pantBottom" },
+    "pantLength","pantWaist","pantHip","pantKnee","pantThigh","pantBottom",
   ];
 
   return (
     <div className="add-customer-page">
-      <h2>Add Customer</h2>
+      <h2>{isEditMode ? "Edit Customer" : "Add Customer"}</h2>
 
       <div className="customer-form">
-        <h3>Customer Info</h3>
-        <input
-          type="text"
-          name="name"
-          placeholder="Customer Name"
-          value={customer.name}
-          onChange={handleChange}
-        />
-        <input
-          type="email"
-          name="email"
-          placeholder="Email"
-          value={customer.email}
-          onChange={handleChange}
-        />
-        <input
-          type="text"
-          name="phone"
-          placeholder="Phone"
-          value={customer.phone}
-          onChange={handleChange}
-        />
+        <input name="name" placeholder="Name" value={customer.name} onChange={handleChange} />
+        <input name="email" placeholder="Email" value={customer.email} onChange={handleChange} />
+        <input name="phone" placeholder="Phone" value={customer.phone} onChange={handleChange} />
 
-        <h3>Blouse Measurements</h3>
+        <h3>Blouse</h3>
         <div className="measurements-section">
-          {blouseFields.map((field) => (
-            <input
-              key={field.name}
-              type="text"
-              name={field.name}
-              placeholder={field.label}
-              value={customer[field.name]}
-              onChange={handleChange}
-            />
+          {blouseFields.map((f) => (
+            <input key={f} name={f} placeholder={f} value={customer[f]} onChange={handleChange} />
           ))}
         </div>
 
-        <h3>Dress Measurements</h3>
+        <h3>Dress</h3>
         <div className="measurements-section">
-          {dressFields.map((field) => (
-            <input
-              key={field.name}
-              type="text"
-              name={field.name}
-              placeholder={field.label}
-              value={customer[field.name]}
-              onChange={handleChange}
-            />
+          {dressFields.map((f) => (
+            <input key={f} name={f} placeholder={f} value={customer[f]} onChange={handleChange} />
           ))}
         </div>
 
-        <h3>Pant Measurements</h3>
+        <h3>Pant</h3>
         <div className="measurements-section">
-          {pantFields.map((field) => (
-            <input
-              key={field.name}
-              type="text"
-              name={field.name}
-              placeholder={field.label}
-              value={customer[field.name]}
-              onChange={handleChange}
-            />
+          {pantFields.map((f) => (
+            <input key={f} name={f} placeholder={f} value={customer[f]} onChange={handleChange} />
           ))}
         </div>
 
-        <button onClick={handleSave}>Save Customer</button>
+        <button onClick={handleSave}>
+          {isEditMode ? "Update Customer" : "Save Customer"}
+        </button>
       </div>
     </div>
   );
