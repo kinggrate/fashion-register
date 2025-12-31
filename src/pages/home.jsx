@@ -1,21 +1,39 @@
 import React from "react";
-import "./home.css";
+import "./Home.css";
 
 export default function Home() {
   return (
-    <div className="home-page">
-      <div className="home-content">
-        <h1>Welcome to Sonal Designer Boutique</h1>
-        <p>
-          We create custom-designed fashion for every occasion. Explore our
-          services and manage your orders efficiently.
-        </p>
-        <img
-          src="/boutique-photo.jpg" 
-          alt="Boutique"
-          className="home-image"
-        />
-      </div>
+    <div className="home-container">
+      {/* Hero Section */}
+      <section className="home-hero">
+        <h1>Sonal Designer Boutique</h1>
+        <p>Custom Blouse • Dress • Designer Wear</p>
+      </section>
+
+      {/* Info Section */}
+      <section className="home-info">
+        <div className="info-card">
+          <h3>Custom Stitching</h3>
+          <p>
+            Perfect fitting blouses, dresses and outfits stitched exactly to
+            your measurements.
+          </p>
+        </div>
+
+        <div className="info-card">
+          <h3>Measurement Records</h3>
+          <p>
+            All customer measurements are safely stored for future orders.
+          </p>
+        </div>
+
+        <div className="info-card">
+          <h3>Quality & Trust</h3>
+          <p>
+            Trusted tailoring with attention to detail and comfort.
+          </p>
+        </div>
+      </section>
     </div>
   );
 }
