@@ -2,9 +2,9 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background-color: #b45f7d;
+  background-color: #ffffff;
   padding: 10px 20px;
-  color: white;
+  color: rgb(0, 0, 0);
   flex-wrap: wrap;
 }
 
@@ -15,8 +15,8 @@
 
 .nav-buttons button {
   margin-right: 10px;
-  background: #fff;
-  color: #b45f7d;
+  background: #ffffff;
+  color: #000000;
   border: none;
   padding: 6px 12px;
   border-radius: 5px;
@@ -25,6 +25,7 @@
 
 .nav-buttons button:hover {
   background-color: #f1f1f1;
+  transform: translate(-4px);
 }
 
 .nav-search {
